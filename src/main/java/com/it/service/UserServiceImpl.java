@@ -1,6 +1,7 @@
 package com.it.service;
 
 import com.it.dto.AuthDto;
+import com.it.dto.RegisterDto;
 import com.it.dto.UserDto;
 import com.it.entity.User;
 import com.it.exception.AppException;
@@ -13,6 +14,8 @@ import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
@@ -22,17 +25,17 @@ public class UserServiceImpl implements UserService {
     UserRepository userRepository;
 
     @Override
-    public void save(UserDto userDto) {
-        if(userRepository.existsByUsername(userDto.getUsername())){
+    public void registerUser(RegisterDto registerDto) {
+        if(userRepository.existsByUsername(registerDto.getUsername())){
             throw new AppException(ErrorMessage.USER_EXISTS);
         }
-        if (!userDto.getPassword().equals(userDto.getConfirmPassword())) {
+        if (!registerDto.getPassword().equals(registerDto.getConfirmPassword())) {
             throw new AppException(ErrorMessage.PASSWORD_NOT_MATCH);
         }
         userRepository.save(User.builder()
-                .name(userDto.getName())
-                .username(userDto.getUsername())
-                .password(userDto.getPassword())
+                .name(registerDto.getName())
+                .username(registerDto.getUsername())
+                .password(registerDto.getPassword())
                 .status(StatusConstant.ACTIVE.getValue())
                 .build());
     }
@@ -46,5 +49,12 @@ public class UserServiceImpl implements UserService {
         if (!user.getStatus().equalsIgnoreCase(StatusConstant.ACTIVE.getValue())) {
             throw new AppException(ErrorMessage.USER_NOT_ACTIVE);
         }
+    }
+
+    @Override
+    public List<UserDto> getAll() {
+        return userRepository.findAll().stream()
+                .map(UserDto::new)
+                .toList();
     }
 }

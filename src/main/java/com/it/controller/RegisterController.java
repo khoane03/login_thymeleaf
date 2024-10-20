@@ -1,6 +1,6 @@
 package com.it.controller;
 
-import com.it.dto.UserDto;
+import com.it.dto.RegisterDto;
 import com.it.exception.AppException;
 import com.it.service.UserService;
 import lombok.RequiredArgsConstructor;
@@ -20,14 +20,14 @@ public class RegisterController {
 
     @GetMapping("/register")
     public String showRegister(Model model) {
-        model.addAttribute("userDto", new UserDto());
+        model.addAttribute("userDto", new RegisterDto());
         return "page/register";
     }
 
     @PostMapping("/register")
-    public String register(@ModelAttribute UserDto userDto, Model model) {
+    public String register(@ModelAttribute RegisterDto registerDto, Model model) {
         try {
-            userService.save(userDto);
+            userService.registerUser(registerDto);
         } catch (AppException e) {
             model.addAttribute("message", e.getMessage());
             return "page/register";

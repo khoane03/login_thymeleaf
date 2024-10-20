@@ -1,5 +1,6 @@
 package com.it.dto;
 
+import com.it.entity.User;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
@@ -11,7 +12,15 @@ import lombok.experimental.FieldDefaults;
 public class UserDto {
     String name;
     String username;
-    String password;
-    String confirmPassword;
     String status;
+    String createAt;
+
+    public UserDto(User user) {
+        if (user != null) {
+            this.name = user.getName();
+            this.username = user.getUsername();
+            this.status = user.getStatus();
+            this.createAt = user.getCreateAt().toString();
+        }
+    }
 }
