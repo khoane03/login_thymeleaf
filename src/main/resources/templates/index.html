@@ -1,0 +1,31 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Admin Dashboard</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link th:href="@{/css/bootstrap.min.css}" rel="stylesheet">
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+
+<!-- Header -->
+<div th:replace="~{fragments/header :: header}"></div>
+<!-- Main content -->
+<main class="container-fluid mt-4">
+    <div class="row">
+        <!-- Sidebar Menu -->
+        <div th:replace="~{fragments/menu_left :: menu}"></div>
+
+        <!-- Main Content (Right Section) -->
+        <div th:replace="~{fragments/main_right :: main}"></div>
+    </div>
+</main>
+
+<!-- Footer -->
+<div th:replace="~{fragments/footer :: footer}"></div>
+
+<script th:src="@{/js/bootstrap.min.js}"></script>
+</body>
+</html>
+

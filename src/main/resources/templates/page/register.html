@@ -1,0 +1,62 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Đăng ký tài khoản </title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link th:href="@{/css/bootstrap.min.css}" rel="stylesheet">
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+<div class="container d-flex justify-content-center align-items-center vh-100">
+    <div class="col-md-4">
+        <!-- Login Form -->
+        <div class="card shadow-lg">
+            <div class="card-header text-center">
+                <h3>Đăng Ký</h3>
+            </div>
+            <div class="card-body">
+                <form th:action="@{/register}" method="post" th:object="${userDto}">
+
+                    <div class="mb-3">
+                        <label for="name" class="form-label">Họ và Tên</label>
+                        <input type="text" class="form-control" id="name" name="name" placeholder="Nhập họ và tên" th:field="*{name}" required>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="username" class="form-label">Tài khoản</label>
+                        <input type="text" class="form-control" id="username" name="username" th:field="*{username}" placeholder="Nhập tài khoản" required>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="password" class="form-label">Mật Khẩu</label>
+                        <input type="password" class="form-control" id="password" name="password" th:field="*{password}" placeholder="Nhập mật khẩu" required>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="confirm_password" class="form-label">Nhập lại mật khẩu</label>
+                        <input type="password" class="form-control" id="confirm_password" name="confirm_password" th:field="*{confirmPassword}" placeholder="Nhập mật khẩu" required>
+                    </div>
+
+                    <div th:if="${message}" class="alert alert-danger d-flex align-items-center" role="alert">
+                        <div>
+                            <span th:text="${message}"></span>
+                        </div>
+                    </div>
+
+                    <!-- Login Button -->
+                    <div class="d-grid">
+                        <button type="submit" class="btn btn-primary">Đăng ký</button>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Footer -->
+            <div class="card-footer text-center">
+                <small>Bạn đã có tài khoản? <a th:href="@{login}">Đăng nhập</a></small>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

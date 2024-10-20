@@ -1,0 +1,58 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Đăng nhập</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link th:href="@{/css/bootstrap.min.css}" rel="stylesheet">
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+<div th:fragment="login" class="container d-flex justify-content-center align-items-center vh-100">
+    <div class="col-md-4">
+        <!-- Login Form -->
+        <div class="card shadow-lg">
+            <div class="card-header text-center">
+                <h3>Đăng Nhập</h3>
+            </div>
+            <div class="card-body">
+                <form th:action="@{/login}" th:object="${authDto}" method="post">
+                    <!-- Email Input -->
+                    <div class="mb-3">
+                        <label for="username" class="form-label">Tài khoản</label>
+                        <input th:field="*{username}" type="text" class="form-control" id="username" name="username" placeholder="Nhập tài khoản của bạn" required>
+                    </div>
+
+                    <!-- Password Input -->
+                    <div class="mb-3">
+                        <label for="password" class="form-label">Mật Khẩu</label>
+                        <input th:field="*{password}" type="password" class="form-control" id="password" name="password" placeholder="Nhập mật khẩu" required>
+                    </div>
+
+                    <div th:if="${message}" class="alert alert-danger d-flex align-items-center" role="alert">
+                        <div>
+                            <span th:text="${message}"></span>
+                        </div>
+                    </div>
+                    <!-- Remember Me Checkbox -->
+                    <div class="mb-3 form-check">
+                        <input type="checkbox" class="form-check-input" id="rememberMe">
+                        <label class="form-check-label" for="rememberMe">Ghi nhớ đăng nhập</label>
+                    </div>
+
+                    <!-- Login Button -->
+                    <div class="d-grid">
+                        <button type="submit" class="btn btn-primary">Đăng Nhập</button>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Footer -->
+            <div class="card-footer text-center">
+                <small>Chưa có tài khoản? <a th:href="@{register}">Đăng ký</a></small>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>
