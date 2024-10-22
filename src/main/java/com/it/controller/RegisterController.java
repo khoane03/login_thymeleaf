@@ -1,6 +1,6 @@
 package com.it.controller;
 
-import com.it.dto.RegisterDto;
+import com.it.dto.request.RegisterDto;
 import com.it.exception.AppException;
 import com.it.service.UserService;
 import lombok.RequiredArgsConstructor;

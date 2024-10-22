@@ -1,4 +1,4 @@
-package com.it.dto;
+package com.it.dto.response;
 
 import com.it.entity.User;
 import lombok.*;
@@ -10,6 +10,7 @@ import lombok.experimental.FieldDefaults;
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class UserDto {
+    Integer id;
     String name;
     String username;
     String status;
@@ -17,6 +18,7 @@ public class UserDto {
 
     public UserDto(User user) {
         if (user != null) {
+            this.id = user.getId();
             this.name = user.getName();
             this.username = user.getUsername();
             this.status = user.getStatus();

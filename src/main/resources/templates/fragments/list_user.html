@@ -1,10 +1,74 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>$Title$</title>
-</head>
-<body>
-$END$
-</body>
-</html>
+<div th:fragment="listuser" class="col-md-9 col-lg-10">
+    <section id="userManagementSection">
+        <h2>Danh Sách Người Dùng</h2>
+
+        <!-- Search User -->
+        <div class="input-group mb-3">
+            <form th:action="@{/list_user}" class="form-control" method="get">
+                <input type="text" name="keyword" placeholder="Nhập tên hoặc tài khoản để tìm kiếm..."
+                       aria-label="Search">
+                <button class="btn bg-success" type="submit">Tìm kiếm</button>
+            </form>
+        </div>
+
+        <!-- Table of Users -->
+        <div class="table-responsive">
+            <table class="table table-bordered table-striped">
+                <thead class="table-dark">
+                <tr>
+                    <th>ID</th>
+                    <th>Tên Người Dùng</th>
+                    <th>Tài khoản</th>
+                    <th>Trạng Thái</th>
+                    <th>Ngày Tạo</th>
+                    <th>Hành Động</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="user : ${users.content}">
+                    <td th:text="${user.id}"></td>
+                    <td th:text="${user.name}"></td>
+                    <td th:text="${user.username}"></td>
+                    <td><span class="badge "
+                              th:text="${user.status}"
+                              th:classappend="${user.status == 'Kích hoạt' ? 'bg-success' : 'bg-danger' }"
+                    ></span></td>
+                    <td th:text="${user.createAt}"></td>
+                    <td>
+                        <a th:href="@{/update_user(username=${user.username})}" class="btn btn-info btn-sm ">Chỉnh
+                            Sửa</a>
+                        <a th:classappend="${user.status == 'Kích hoạt' ? 'disabled' : ''}"
+                           th:href="@{/enable_user(username=${user.username})}" class="btn btn-warning btn-sm ">Mở
+                            Khoá</a>
+                        <a th:classappend="${user.status != 'Kích hoạt' ? 'disabled' : ''}"
+                           th:href="@{/disable_user(username=${user.username})}" class="btn btn-danger btn-sm ">Khoá</a>
+                    </td>
+                </tr>
+
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Pagination -->
+        <nav aria-label="...">
+            <ul class="pagination">
+                <li th:classappend=" ${pageIndex == 1 ? ' disabled' : ' ' }" class="page-item ">
+                    <a th:href=" @{/list_user(pageIndex=${pageIndex - 1})} "
+                       class="page-link" href="#" tabindex="-1" aria-disabled="true">Previous</a>
+                </li>
+
+                <li th:each="i : ${#numbers.sequence(1, totalPages)}"
+                    th:classappend=" ${pageIndex == i ? ' active' : ' ' }" class="page-item" aria-current="page">
+                    <a class="page-link " th:href=" @{/list_user(pageIndex=${i})}">
+                        <span th:text="${i}"></span>
+                    </a>
+                </li>
+                <li th:classappend=" ${pageIndex == totalPages ? ' disabled' : ' ' }" class="page-item ">
+                    <a th:href=" @{/list_user(pageIndex=${pageIndex + 1})}"
+                       class="page-link" href="#">Next</a>
+                </li>
+            </ul>
+        </nav>
+
+    </section>
+</div>

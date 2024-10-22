@@ -1,10 +1,15 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>$Title$</title>
-</head>
-<body>
-$END$
-</body>
-</html>
+<div th:fragment="info" class="col-md-9 col-lg-10">
+<section id="profileSection" class="mb-5">
+    <h2>Thông Tin Tài Khoản Đăng nhập</h2>
+    <div class="card">
+        <div class="card-body">
+            <h5 class="card-title">Admin: <span th:text="${user.name}"></span></h5>
+            <p class="card-text">
+                <strong>Tài khoản:</strong> <span th:text="${user.username}"></span> <br>
+                <strong>Ngày tạo tài khoản:</strong> <span th:text="${user.createAt}"></span>
+            </p>
+            <a th:href="@{/update_user(username=${user.username})}" class="btn btn-primary">Chỉnh Sửa Thông Tin</a>
+        </div>
+    </div>
+</section>
+</div>

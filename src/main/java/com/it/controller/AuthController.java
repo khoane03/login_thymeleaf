@@ -1,7 +1,6 @@
 package com.it.controller;
 
-import com.it.dto.AuthDto;
-import com.it.entity.User;
+import com.it.dto.request.AuthDto;
 import com.it.exception.AppException;
 import com.it.service.UserService;
 import jakarta.servlet.http.HttpSession;

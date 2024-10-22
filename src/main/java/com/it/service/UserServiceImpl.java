@@ -1,8 +1,9 @@
 package com.it.service;
 
-import com.it.dto.AuthDto;
-import com.it.dto.RegisterDto;
-import com.it.dto.UserDto;
+import com.it.dto.request.AuthDto;
+import com.it.dto.request.RegisterDto;
+import com.it.dto.request.UserUpdateDto;
+import com.it.dto.response.UserDto;
 import com.it.entity.User;
 import com.it.exception.AppException;
 import com.it.exception.ErrorMessage;
@@ -12,9 +13,11 @@ import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -26,7 +29,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void registerUser(RegisterDto registerDto) {
-        if(userRepository.existsByUsername(registerDto.getUsername())){
+        if (userRepository.existsByUsername(registerDto.getUsername())) {
             throw new AppException(ErrorMessage.USER_EXISTS);
         }
         if (!registerDto.getPassword().equals(registerDto.getConfirmPassword())) {
@@ -52,9 +55,51 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<UserDto> getAll() {
-        return userRepository.findAll().stream()
-                .map(UserDto::new)
-                .toList();
+    public UserDto getInfo(String username) {
+        return new UserDto(userRepository.findByUsername(username)
+                .orElseThrow(() -> new AppException(ErrorMessage.USER_NOT_FOUND)));
+    }
+
+    @Override
+    public Page<UserDto> getAll(int pageIndex, String keyword) {
+        Pageable pageable = PageRequest.of(pageIndex - 1, 10);
+        if(keyword != null && !keyword.isEmpty()) {
+            return userRepository.findAllByKeyword(keyword, pageable)
+                    .map(UserDto::new);
+        }
+        return userRepository.findAll(pageable)
+                .map(UserDto::new);
+    }
+
+    @Override
+    public void updateUser(String username, UserUpdateDto userUpdateDto) {
+        User user = userRepository.findByUsername(username)
+                .orElseThrow(() -> new AppException(ErrorMessage.USER_NOT_FOUND));
+
+        if (userUpdateDto.getName() != null && !userUpdateDto.getName().isEmpty()) {
+            user.setName(userUpdateDto.getName());
+        }
+        if (userUpdateDto.getPassword() != null && !userUpdateDto.getPassword().isEmpty()) {
+            if (!userUpdateDto.getPassword().equals(userUpdateDto.getConfirmPassword())) {
+                throw new AppException(ErrorMessage.PASSWORD_NOT_MATCH);
+            }
+        }
+        userRepository.save(user);
+    }
+
+    @Override
+    public void disableUser(String username) {
+        User user = userRepository.findByUsername(username)
+                .orElseThrow(() -> new AppException(ErrorMessage.USER_NOT_FOUND));
+        user.setStatus(StatusConstant.LOCKED.getValue());
+        userRepository.save(user);
+    }
+
+    @Override
+    public void enableUser(String username) {
+        User user = userRepository.findByUsername(username)
+                .orElseThrow(() -> new AppException(ErrorMessage.USER_NOT_FOUND));
+        user.setStatus(StatusConstant.ACTIVE.getValue());
+        userRepository.save(user);
     }
 }

@@ -1,4 +1,4 @@
-package com.it.dto;
+package com.it.dto.request;
 
 import lombok.*;
 import lombok.experimental.FieldDefaults;
@@ -8,7 +8,10 @@ import lombok.experimental.FieldDefaults;
 @NoArgsConstructor
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class AuthDto {
+public class RegisterDto {
+    String name;
     String username;
     String password;
+    String confirmPassword;
+    String status;
 }
